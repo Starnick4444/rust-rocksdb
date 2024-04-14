@@ -875,6 +875,7 @@ impl<'db, DB> Transaction<'db, DB> {
 
 impl<'db, DB> Drop for Transaction<'db, DB> {
     fn drop(&mut self) {
+        println!("rocksdb transaction destroy");
         warn!("rocksdb transaction destroy");
         unsafe {
             ffi::rocksdb_transaction_destroy(self.inner);
