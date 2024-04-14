@@ -21,7 +21,6 @@ use crate::{
     Direction, Error, IteratorMode, ReadOptions, SnapshotWithThreadMode, WriteBatchWithTransaction,
 };
 use libc::{c_char, c_void, size_t};
-use tracing::warn;
 
 /// RocksDB Transaction.
 ///
@@ -30,7 +29,7 @@ use tracing::warn;
 /// [`TransactionDB`]: crate::TransactionDB
 /// [`OptimisticTransactionDB`]: crate::OptimisticTransactionDB
 pub struct Transaction<'db, DB> {
-    pub(crate) id: String,
+    pub id: String,
     pub(crate) inner: *mut ffi::rocksdb_transaction_t,
     pub(crate) _marker: PhantomData<&'db DB>,
 }
