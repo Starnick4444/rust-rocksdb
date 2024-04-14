@@ -254,8 +254,10 @@ impl<T: ThreadMode> OptimisticTransactionDB<T> {
         writeopts: &WriteOptions,
         otxn_opts: &OptimisticTransactionOptions,
     ) -> Transaction<Self> {
+        let id = Uuid::new_v4().to_string();
+        println!("created transaction with id: {}", id);
         Transaction {
-            id: Uuid::new_v4().to_string(),
+            id,
             inner: unsafe {
                 ffi::rocksdb_optimistictransaction_begin(
                     self.inner.db,

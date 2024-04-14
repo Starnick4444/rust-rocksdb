@@ -400,8 +400,10 @@ impl<T: ThreadMode> TransactionDB<T> {
         write_opts: &WriteOptions,
         txn_opts: &TransactionOptions,
     ) -> Transaction<'a, Self> {
+        let id = Uuid::new_v4().to_string();
+        println!("created transaction with id: {}", id);
         Transaction {
-            id: Uuid::new_v4().to_string(),
+            id,
             inner: unsafe {
                 ffi::rocksdb_transaction_begin(
                     self.inner,
