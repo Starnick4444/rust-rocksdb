@@ -22,6 +22,7 @@ use crate::{
     ColumnFamilyDescriptor, Error, OptimisticTransactionOptions, Options, ThreadMode, Transaction,
     WriteOptions, DEFAULT_COLUMN_FAMILY_NAME,
 };
+use uuid::Uuid;
 
 /// A type alias to RocksDB Optimistic Transaction DB.
 ///
@@ -254,6 +255,7 @@ impl<T: ThreadMode> OptimisticTransactionDB<T> {
         otxn_opts: &OptimisticTransactionOptions,
     ) -> Transaction<Self> {
         Transaction {
+            id: Uuid::new_v4().to_string(),
             inner: unsafe {
                 ffi::rocksdb_optimistictransaction_begin(
                     self.inner.db,

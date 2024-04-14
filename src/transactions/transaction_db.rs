@@ -37,6 +37,7 @@ use crate::{
 };
 use ffi::rocksdb_transaction_t;
 use libc::{c_char, c_int, c_void, size_t};
+use uuid::Uuid;
 
 #[cfg(not(feature = "multi-threaded-cf"))]
 type DefaultThreadMode = crate::SingleThreaded;
@@ -400,6 +401,7 @@ impl<T: ThreadMode> TransactionDB<T> {
         txn_opts: &TransactionOptions,
     ) -> Transaction<'a, Self> {
         Transaction {
+            id: Uuid::new_v4().to_string(),
             inner: unsafe {
                 ffi::rocksdb_transaction_begin(
                     self.inner,
@@ -422,6 +424,7 @@ impl<T: ThreadMode> TransactionDB<T> {
             .unwrap()
             .drain(0..)
             .map(|inner| Transaction {
+                id: Uuid::new_v4().to_string(),
                 inner,
                 _marker: PhantomData::default(),
             })
