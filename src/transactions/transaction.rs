@@ -21,6 +21,7 @@ use crate::{
     Direction, Error, IteratorMode, ReadOptions, SnapshotWithThreadMode, WriteBatchWithTransaction,
 };
 use libc::{c_char, c_void, size_t};
+use tracing::warn;
 
 /// RocksDB Transaction.
 ///
@@ -874,6 +875,7 @@ impl<'db, DB> Transaction<'db, DB> {
 
 impl<'db, DB> Drop for Transaction<'db, DB> {
     fn drop(&mut self) {
+        warn!("rocksdb transaction destroy");
         unsafe {
             ffi::rocksdb_transaction_destroy(self.inner);
         }
